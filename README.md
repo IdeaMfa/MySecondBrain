@@ -8,7 +8,7 @@ You don't write the notes, you tell them. Claude writes each note, tags it, link
 
 The repo is an empty skeleton: rules, workflows, a few small scripts and an empty vault. On first run Claude asks you a few questions and sets the system up around your projects, courses and weekly routine.
 
-![Graph view of a vault built with MySecondBrain: hubs, notes, meetings and people linked together](docs/images/graph.png)
+![Demo: a note is told to Claude Code in the terminal, saved with tags and links, found again with sources, and shown in Obsidian](docs/images/demo.gif)
 
 <sub>Screenshots come from a demo vault with fictional content (Alex Rivera, a product designer).</sub>
 
@@ -96,6 +96,10 @@ Tasks don't live in a separate app. They are `- [ ]` lines in your notes, and pl
 - **Tags classify.** `project/website-redesign`, `course/stat101`, `learning/typography`, `person`, `meeting`, `idea`, `admin`. A note can have several tags. The dictionary is `vault/System/Tags.md`, and the lint flags tags that aren't in it.
 - **Hubs are virtual folders.** Each project, course or topic has a hub note in `Hubs/`. Its Obsidian Bases block lists every note with that tag automatically, so one note can show up in several "folders" at once. A hub's `## Now` section holds the current state and next step, and recall and plan-day read it first.
 - **Links make the graph.** Every note links to at least one hub through its `hub:` frontmatter field, and links people, concepts and related notes in its body with `[[wikilinks]]`. A concept that shows up in two or more notes gets a note of its own.
+
+The links add up to a graph you can browse in Obsidian:
+
+![Graph view of a vault built with MySecondBrain: hubs, notes, meetings and people linked together](docs/images/graph.png)
 
 A hub lists its notes through a Bases table, with the current state on top:
 
