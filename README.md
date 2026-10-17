@@ -1,5 +1,7 @@
 # MySecondBrain
 
+[![tests](https://github.com/IdeaMfa/MySecondBrain/actions/workflows/tests.yml/badge.svg)](https://github.com/IdeaMfa/MySecondBrain/actions/workflows/tests.yml)
+
 A personal "second brain" you talk to in [Claude Code](https://claude.com/claude-code) and look at in [Obsidian](https://obsidian.md).
 
 You don't write the notes, you tell them. Claude writes each note, tags it, links it to related notes and projects, and finds it again with sources when you ask. Everything stays on your computer as plain Markdown files.
