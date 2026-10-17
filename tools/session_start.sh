@@ -18,5 +18,7 @@ inbox=$(find "$V/Inbox" -name '*.md' ! -name 'Inbox.md' 2>/dev/null | wc -l)
 [ "$inbox" -gt 0 ] && echo "$inbox unprocessed notes in Inbox."
 new=$(grep -l '^status: new' "$V/Sources/Transcripts/"*.md 2>/dev/null | wc -l)
 [ "$new" -gt 0 ] && echo "$new unprocessed meeting transcripts (ingest-meeting)."
+vids=$(grep -l '^status: new' "$V/Sources/YouTube/"*.md 2>/dev/null | wc -l)
+[ "$vids" -gt 0 ] && echo "$vids unprocessed video transcripts (ingest-video)."
 python3 "$ROOT/tools/vault_lint.py" --quiet 2>/dev/null | sed 's/^/Vault: /'
 exit 0

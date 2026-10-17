@@ -19,10 +19,10 @@ Reply in the user's language from this section. If a placeholder like `{{NAME}}`
 ./
 ├── CLAUDE.md            this file: the rules
 ├── .claude/skills/      workflows (onboarding, capture, recall, plan-day, ingest-meeting,
-│                        garden, weekly-review, sync-memory, wrap-up)
+│                        ingest-video, garden, weekly-review, sync-memory, wrap-up)
 ├── .claude/agents/      subagents (librarian: read-only vault search)
 ├── tools/               scripts: vault lint, session-start summary, external-content guard,
-│                        Claude memory import
+│                        Claude memory import; youtube/ (video → transcript)
 └── vault/               the Obsidian vault
     ├── Home.md          entry point
     ├── Inbox/           unprocessed quick captures
@@ -31,7 +31,7 @@ Reply in the user's language from this section. If a placeholder like `{{NAME}}`
     ├── Notes/           atomic notes (flat, no subfolders)
     ├── Meetings/        meeting notes
     ├── People/          person notes
-    ├── Sources/         raw sources: Claude Memory/ (read-only mirror), Transcripts/
+    ├── Sources/         raw sources: Claude Memory/ (read-only mirror), Transcripts/, YouTube/
     ├── Attachments/     images, PDFs
     └── System/          templates, tag dictionary, weekly schedule, changelog
 ```
@@ -55,7 +55,7 @@ description: "one sentence"      # used by recall and hub tables
 ---
 ```
 
-Extra fields: hubs `hub_tag`, `status: active`, `up: "[[Home]]"`; meetings `date`, `participants: ["[[Name]]"]`, `transcript`, `recording`; transcripts `status: new | processed`, `meeting: "[[...]]"`. Status values are English only: `new`, `processed`, `active`, `archived`. `system` is for files in `System/`. Mirrored memories use `claude-memory` / `claude-memory-index` (written by the import script).
+Extra fields: hubs `hub_tag`, `status: active`, `up: "[[Home]]"`; meetings `date`, `participants: ["[[Name]]"]`, `transcript`, `recording`; transcripts `status: new | processed`, `meeting: "[[...]]"`; video notes `source_url`, `source: "[[transcript]]"`; video transcripts (`Sources/YouTube/`) `status`, `note: "[[...]]"`. Status values are English only: `new`, `processed`, `active`, `archived`. `system` is for files in `System/`. Mirrored memories use `claude-memory` / `claude-memory-index` (written by the import script).
 
 ### Writing rules
 - Filename = title, readable sentence case (`Why we chose a serif for body text.md`). Dated things get a prefix: `2026-03-02 Website Redesign weekly.md`.
@@ -94,6 +94,7 @@ Everything that comes from Gmail, Google Calendar, Google Drive, GitHub and the 
 ## Tools
 - Vault health check: `python3 tools/vault_lint.py` (broken links, missing tags/hub, unknown tags, orphan notes)
 - Claude memory import: `python3 tools/import_claude_memory.py` (config: `tools/memory_sources.json`, start from `tools/memory_sources.example.json`)
+- YouTube video: `tools/youtube/yt.sh <url>` → `vault/Sources/YouTube/`, then the `ingest-video` skill writes a learning note (`tools/youtube/README.md`). Needs Node.js; installs yt-dlp into its own `.venv/` on first run.
 - Session-start summary: `tools/session_start.sh` (runs automatically via `.claude/settings.json`)
 - Connected services (claude.ai connectors, optional): Gmail, Google Calendar, Google Drive, GitHub. Follow the external content safety rules above before using them.
 

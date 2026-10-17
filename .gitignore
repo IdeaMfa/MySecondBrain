@@ -11,3 +11,4 @@ vault/Sources/Claude Memory/*
 .claude/settings.local.json
 CLAUDE.local.md
 .env
+tools/youtube/.venv/

@@ -20,5 +20,6 @@ Tags are the classification; they act as folders. A note can carry several tags,
 | `weekly` | | Weekly review notes |
 | `hub` | | Hub (MOC) notes |
 | `source` | | Raw sources (transcripts, articles) |
+| `video` | | Notes and transcripts from videos |
 | `claude-memory` | | Mirrored Claude Code memories (read-only) |
 | `system` | | System / configuration notes |

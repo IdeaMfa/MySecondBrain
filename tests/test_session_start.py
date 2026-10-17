@@ -14,7 +14,7 @@ class SessionStartTest(unittest.TestCase):
         self.root = Path(self.tmp.name)
         shutil.copytree(TOOLS, self.root / "tools", ignore=shutil.ignore_patterns("__pycache__"))
         v = self.root / "vault"
-        for d in ("Inbox", "Daily", "Notes", "System", "Sources/Transcripts"):
+        for d in ("Inbox", "Daily", "Notes", "System", "Sources/Transcripts", "Sources/YouTube"):
             (v / d).mkdir(parents=True)
         (v / "Inbox" / "Inbox.md").write_text("# Inbox\n")
         (self.root / "CLAUDE.md").write_text("## About you\n- Name: {{NAME}}\n")
@@ -46,12 +46,14 @@ class SessionStartTest(unittest.TestCase):
         (self.vault / "Inbox" / "idea.md").write_text("x")
         (self.vault / "Sources" / "Transcripts" / "t.md").write_text("---\nstatus: new\n---\n")
         (self.vault / "Sources" / "Transcripts" / "u.md").write_text("---\nstatus: processed\n---\n")
+        (self.vault / "Sources" / "YouTube" / "v.md").write_text("---\nstatus: new\n---\n")
         code, out = self.run_hook()
         self.assertEqual(code, 0)
         self.assertNotIn("Setup not finished", out)
         self.assertIn(f"Daily note exists: Daily/{today}.md (2 open plan items)", out)
         self.assertIn("1 unprocessed notes in Inbox.", out)
         self.assertIn("1 unprocessed meeting transcripts (ingest-meeting).", out)
+        self.assertIn("1 unprocessed video transcripts (ingest-video).", out)
 
     def test_never_fails_without_vault(self):
         shutil.rmtree(self.vault)
