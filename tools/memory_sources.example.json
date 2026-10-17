@@ -1,0 +1,17 @@
+{
+  "_comment": "Copy to tools/memory_sources.json (gitignored) and edit. Keys are folder names under ~/.claude/projects/ (run: python3 tools/import_claude_memory.py --list-new). Each source maps to a hub note and tags; use {\"skip\": true} to ignore a project. profile_hub: your person note; user/feedback memories also link to it.",
+  "profile_hub": "Alex Rivera",
+  "sources": {
+    "-Users-alex-code-website-redesign": {
+      "hub": "Website Redesign",
+      "tags": ["project/website-redesign"]
+    },
+    "-Users-alex-notes-typography": {
+      "hub": "Learning",
+      "tags": ["learning/typography"]
+    },
+    "-Users-alex-tmp-scratch": {
+      "skip": true
+    }
+  }
+}

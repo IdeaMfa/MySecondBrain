@@ -1,0 +1,13 @@
+__pycache__/
+vault/.obsidian/workspace*.json
+vault/.obsidian/cache
+vault/.obsidian/graph.json
+vault/.obsidian/appearance.json
+vault/.trash/
+tools/memory_sources.json
+vault/Sources/Claude Memory/*
+!vault/Sources/Claude Memory/.gitkeep
+.DS_Store
+.claude/settings.local.json
+CLAUDE.local.md
+.env
