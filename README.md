@@ -35,14 +35,14 @@ Saved Notes/Why we chose a serif for body text.md (project/website-redesign, lea
 | Piece | Where | What it does |
 |---|---|---|
 | Rules | `CLAUDE.md` | Who you are, the note schema, writing rules, hard rules, external content safety. Claude reads it every session. |
-| Workflows (skills) | `.claude/skills/` | Step-by-step recipes for each job: capture, recall, plan-day, ingest-meeting, and more. |
+| Workflows (skills) | `.claude/skills/` | Step-by-step recipes for each job: capture, recall, plan-day, ingest-meeting, ingest-video, and more. |
 | Librarian | `.claude/agents/librarian.md` | Read-only subagent for broad vault searches, so your main session's context stays small. |
 | Hooks | `.claude/settings.json` | Session-start status summary, plus the guard on external connectors. |
-| Tools | `tools/` | `vault_lint.py` (health check), `session_start.sh` (status summary), `external_guard.py` (connector guard), `import_claude_memory.py` (memory mirror). Python 3 standard library only. |
+| Tools | `tools/` | `vault_lint.py` (health check), `session_start.sh` (status summary), `external_guard.py` (connector guard), `import_claude_memory.py` (memory mirror). Python 3 standard library only. Plus the optional `youtube/` tool (video → transcript), which keeps yt-dlp in its own venv. |
 | Vault | `vault/` | Your notes. Obsidian opens this folder. |
 | Tests | `tests/` | `python3 -m unittest discover tests` |
 
-At the start of every session Claude gets a status summary: today's date, whether today's daily note exists, how many Inbox items and new transcripts are waiting, and the vault's lint result.
+At the start of every session Claude gets a status summary: today's date, whether today's daily note exists, how many Inbox items and new meeting or video transcripts are waiting, and the vault's lint result.
 
 ## Requirements
 
@@ -50,6 +50,7 @@ At the start of every session Claude gets a status summary: today's date, whethe
 - **Obsidian** 1.9 or later (free). The hubs use the core **Bases** plugin; older versions show them as code blocks.
 - **Python 3** (standard library only) and **git**.
 - Optional: [ripgrep](https://github.com/BurntSushi/ripgrep) (`rg`). The skills search with it; without it Claude falls back to its own search tool.
+- Optional, for YouTube videos: [Node.js](https://nodejs.org/). The video tool installs [yt-dlp](https://github.com/yt-dlp/yt-dlp) into its own folder on first run.
 
 ## Install and quick start (~15 minutes)
 
@@ -83,6 +84,7 @@ Ask in plain language, in any language. These are example phrasings:
 | `recall` | "What do I know about X?", "What's pending on <project>?", "Where did I write that?" | Answer from the vault with a `[[link]]` per fact, "as of" dates, and a plain "not recorded" when nothing is there. |
 | `plan-day` | "Plan my day", "plan tomorrow", "close the day" | Hourly plan from the weekly schedule, open tasks, carried-over items and the calendar (if connected). You approve before anything is written. |
 | `ingest-meeting` | "Process this meeting" (paste a transcript or notes) | Meeting note with summary, decisions, action items and open questions, linked to people and hubs. No guessed speakers, no inferred actions. |
+| `ingest-video` | "Process this video: <YouTube link>", "deep notes on this lecture" | Learning note from the video's transcript: summary, key ideas with links to the exact moment, concepts, self-test questions, and an empty `## My notes` section it helps you fill. |
 | `weekly-review` | "Review my week", "weekly review" | `Daily/YYYY-Www Weekly review.md`: summary, progress by hub, stuck items, next week's focus. |
 | `garden` | "Tidy the vault", "fix the links" | Runs the lint; fixes broken links and missing tags or hubs; links recurring concepts; proposes merges. |
 | `sync-memory` | "Sync memories" | Mirrors your Claude Code project memories into the vault (see below). |
@@ -141,6 +143,15 @@ If you already use Claude Code in other project folders, Claude has built up per
 - `python3 tools/import_claude_memory.py --list-new` lists memory folders that aren't in your config yet. `--dry-run` previews without writing.
 - Each run rewrites the mirror from scratch. Secret-like strings (API keys, tokens) are replaced with `[REDACTED]`, Markdown links between memories become wikilinks, and preference/feedback memories also link to your profile note.
 - The mirror is read-only. To correct something, write your own note in `Notes/`. The mirror's contents are gitignored by default.
+
+## YouTube videos
+
+`ingest-video` turns a video into a learning note. Share a link and say "process this video".
+
+- `tools/youtube/yt.sh <url>` writes a timestamped transcript to `vault/Sources/YouTube/` from the video's own captions (manual first, then YouTube's automatic ones). Every paragraph links to that moment in the video.
+- No captions, or a lecture full of board work and slides? With a free Gemini API key in `tools/youtube/.env`, `--gemini` transcribes from audio and video and describes what's on screen (equations in LaTeX).
+- The note lands in `Notes/` with `learning/<topic>` and `video` tags, in your language. "Deep" mode goes section by section and adds answered self-test questions.
+- Setup, settings and troubleshooting: [`tools/youtube/README.md`](tools/youtube/README.md).
 
 ## What a filled vault looks like
 
